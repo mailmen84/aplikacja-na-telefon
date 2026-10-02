@@ -22,7 +22,7 @@ jobs:
       # The project is auto-created on first run if it doesn't exist.
       - name: Create Pages project if missing
         if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
-        run: npx --yes wrangler@3 pages project create homelab-wiki --production-branch=main || true
+        run: npx --yes wrangler@3 pages project create mailmen84-homelab --production-branch=main || true
       - name: Deploy to Cloudflare Pages
         if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
-        run: npx --yes wrangler@3 pages deploy dist --project-name=homelab-wiki --branch=main
+        run: npx --yes wrangler@3 pages deploy dist --project-name=mailmen84-homelab --branch=main
