@@ -1,0 +1,40 @@
+title: Terminal shortcuts & tmux
+defaults:
+  category: linux
+  platform: shell
+groups:
+  - name: Bash line editing
+    defaults: { tags: [shortcuts, bash, keyboard] }
+    commands:
+      - { cmd: "Ctrl + C", desc: "Stop/terminate the running command" }
+      - { cmd: "Ctrl + Z", desc: "Suspend the current process (resume with fg/bg)" }
+      - { cmd: "Ctrl + D", desc: "End of input / log out of the shell" }
+      - { cmd: "Ctrl + L", desc: "Clear the screen (same as clear)" }
+      - { cmd: "Ctrl + A / Ctrl + E", desc: "Jump to start / end of the line" }
+      - { cmd: "Ctrl + U / Ctrl + K", desc: "Delete before / after the cursor" }
+      - { cmd: "Ctrl + W", desc: "Delete the word before the cursor" }
+      - { cmd: "Ctrl + R", desc: "Search command history (type a fragment)" }
+      - { cmd: "Tab / Tab Tab", desc: "Auto-complete / show all completions" }
+      - { cmd: "!!", desc: "Repeat the previous command (sudo !! = with sudo)" }
+      - { cmd: "!$", desc: "Last argument of the previous command" }
+      - { cmd: "Ctrl + Shift + C / V", desc: "Copy / paste in most Linux terminals" }
+  - name: tmux — terminal multiplexer
+    defaults: { tags: [tmux, session, multiplexer] }
+    commands:
+      - { cmd: "tmux new -s work", desc: "Start a new named session", note: "sudo apt install tmux" }
+      - { cmd: "tmux attach -t work", desc: "Re-attach to a session (survives SSH drops)" }
+      - { cmd: "tmux ls", desc: "List sessions" }
+      - { cmd: "Ctrl+b d", desc: "Detach from the session (it keeps running)" }
+      - { cmd: "Ctrl+b c", desc: "New window inside tmux" }
+      - { cmd: 'Ctrl+b "', desc: "Split the pane horizontally" }
+      - { cmd: "Ctrl+b %", desc: "Split the pane vertically" }
+      - { cmd: "Ctrl+b <arrow>", desc: "Move between panes" }
+      - { cmd: "Ctrl+b [", desc: "Scroll/copy mode (q to exit)" }
+  - name: Finding help
+    defaults: { tags: [help, man] }
+    commands:
+      - { cmd: "man <command>", desc: "Full manual page" }
+      - { cmd: "<command> --help", desc: "Quick usage summary" }
+      - { cmd: "tldr <command>", desc: "Short practical examples", note: "sudo apt install tldr" }
+      - { cmd: "apropos <keyword>", desc: "Find a command by what it does" }
+      - { cmd: "type <command>", desc: "Is it an alias, builtin, function or file?" }

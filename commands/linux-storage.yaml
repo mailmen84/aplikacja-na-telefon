@@ -1,0 +1,45 @@
+title: Linux storage commands
+defaults:
+  category: linux
+  platform: linux
+groups:
+  - name: Inspecting disks
+    defaults: { tags: [storage, disk, inspect] }
+    commands:
+      - { cmd: "lsblk", desc: "Show block devices and partitions (the disk map)" }
+      - { cmd: "lsblk -f", desc: "...plus filesystem type, label and UUID" }
+      - { cmd: "sudo fdisk -l", desc: "Partition tables of all disks", admin: true }
+      - { cmd: "sudo blkid", desc: "UUID and filesystem type of each partition", admin: true }
+      - { cmd: "df -h", desc: "Disk usage of mounted filesystems" }
+      - { cmd: "df -i", desc: "Inode usage (full disk with free space = out of inodes)" }
+      - { cmd: "du -sh <dir>", desc: "Total size of a directory" }
+      - { cmd: "ncdu /", desc: "Interactive disk-usage explorer", note: "sudo apt install ncdu" }
+      - { cmd: "findmnt", desc: "Tree of current mount points" }
+      - { cmd: "stat <file>", desc: "Detailed attributes of a file" }
+  - name: Health & performance
+    defaults: { tags: [storage, health, smart, io], admin: true }
+    commands:
+      - { cmd: "sudo smartctl -H /dev/sda", desc: "Quick disk health (smartmontools)" }
+      - { cmd: "sudo smartctl -a /dev/sda", desc: "Full SMART report (hours, reallocated sectors, temp)" }
+      - { cmd: "iostat -x 2", desc: "Disk I/O rate per device (sysstat)", admin: false }
+      - { cmd: "sudo iotop", desc: "Disk I/O per process (live)" }
+      - { cmd: "ioping /data", desc: "Disk I/O latency in real time", admin: false }
+      - { cmd: "sudo hdparm -I /dev/sda", desc: "View/modify HDD/SSD parameters" }
+      - { cmd: "lsof +D /mnt/usb", desc: "Open files under a dir (why 'target is busy')", admin: false }
+  - name: Partitions & filesystems
+    defaults: { tags: [storage, partition, mkfs, fstab], admin: true }
+    commands:
+      - { cmd: "sudo fdisk /dev/sdb", desc: "Create/modify MBR partitions (interactive; w = save)" }
+      - { cmd: "sudo gdisk /dev/sdb", desc: "Create/modify GPT partitions" }
+      - { cmd: "sudo parted /dev/sdb", desc: "Another partition tool (scriptable)" }
+      - { cmd: "sudo mkfs.ext4 /dev/sdb1", desc: "Create an ext4 filesystem", danger: "Erases all data on that partition." }
+      - { cmd: "sudo mkfs.xfs /dev/sdb1", desc: "Create an XFS filesystem", danger: "Erases all data on that partition." }
+      - { cmd: "sudo mount /dev/sdb1 /mnt/usb", desc: "Mount a filesystem (until reboot)" }
+      - { cmd: "sudo umount /mnt/usb", desc: "Unmount — always before unplugging" }
+      - { cmd: "sudo mount -a", desc: "Mount everything in /etc/fstab (test after editing!)" }
+      - { cmd: "sudo fsck -y /dev/sdb1", desc: "Check and repair a filesystem", danger: "Never run on a mounted filesystem." }
+  - name: Danger zone
+    defaults: { tags: [storage, dangerous], admin: true, danger: true }
+    commands:
+      - { cmd: "sudo dd if=image.iso of=/dev/sdX bs=4M status=progress", desc: "Write an image to a disk bit-for-bit", danger: "Wrong 'of=' overwrites the whole disk with no warning. Check lsblk three times." }
+      - { cmd: "sudo wipefs -a /dev/sdX", desc: "Erase all filesystem signatures from a disk", danger: "Makes data unrecoverable by normal means." }

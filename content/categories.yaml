@@ -28,7 +28,12 @@
   name: Networking
   icon: "🌐"
   color: "#12a594"
-  description: IPv4, subnetting, VLANs, Cisco, CCNA
+  description: IPv4, subnetting, VLANs, CCNA theory
+- id: cisco
+  name: Cisco IOS
+  icon: "🔀"
+  color: "#1f9e8f"
+  description: Switch & router config, VLANs, routing, show commands
 - id: homelab
   name: Homelab
   icon: "🏠"

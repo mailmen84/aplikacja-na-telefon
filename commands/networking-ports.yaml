@@ -1,0 +1,46 @@
+title: Common ports & protocols
+# A quick-reference the app can search ("what port is RDP?", "3306").
+defaults:
+  category: networking
+  platform: shell
+  tags: [ports, protocol, reference]
+groups:
+  - name: Remote access & file transfer
+    commands:
+      - { cmd: "22  — SSH / SFTP / SCP", desc: "Encrypted remote shell and file copy (TCP)" }
+      - { cmd: "23  — Telnet", desc: "Unencrypted remote shell — avoid (TCP)", danger: "Plain text; use SSH instead." }
+      - { cmd: "3389 — RDP", desc: "Windows Remote Desktop (TCP)" }
+      - { cmd: "5900 — VNC", desc: "Remote desktop (TCP)" }
+      - { cmd: "21  — FTP", desc: "File transfer, control channel (TCP)" }
+      - { cmd: "445 — SMB / CIFS", desc: "Windows file sharing (TCP)" }
+      - { cmd: "2049 — NFS", desc: "Unix/Linux network file system" }
+  - name: Web & APIs
+    commands:
+      - { cmd: "80  — HTTP", desc: "Unencrypted web (TCP)" }
+      - { cmd: "443 — HTTPS", desc: "Encrypted web / TLS (TCP)" }
+      - { cmd: "8080 — HTTP-alt", desc: "Common app/proxy port (TCP)" }
+      - { cmd: "8006 — Proxmox VE", desc: "Proxmox web UI (HTTPS)" }
+      - { cmd: "9090 — Cockpit", desc: "Linux web admin UI (HTTPS)" }
+  - name: Name resolution & addressing
+    commands:
+      - { cmd: "53  — DNS", desc: "Name resolution (UDP and TCP)" }
+      - { cmd: "67/68 — DHCP", desc: "67 server, 68 client (UDP)" }
+      - { cmd: "123 — NTP", desc: "Time sync (UDP)" }
+      - { cmd: "161/162 — SNMP", desc: "Device monitoring (UDP)" }
+  - name: Mail
+    commands:
+      - { cmd: "25  — SMTP", desc: "Mail transfer between servers (TCP)" }
+      - { cmd: "587 — SMTP submission", desc: "Mail from clients, with STARTTLS (TCP)" }
+      - { cmd: "993 — IMAPS", desc: "Mailbox access over TLS (TCP)" }
+      - { cmd: "995 — POP3S", desc: "Mail download over TLS (TCP)" }
+  - name: Databases
+    commands:
+      - { cmd: "3306 — MySQL / MariaDB", desc: "Relational database (TCP)" }
+      - { cmd: "5432 — PostgreSQL", desc: "Relational database (TCP)" }
+      - { cmd: "6379 — Redis", desc: "Key-value store (TCP)" }
+      - { cmd: "27017 — MongoDB", desc: "Document database (TCP)" }
+  - name: Directory & auth
+    commands:
+      - { cmd: "389 — LDAP", desc: "Directory access, e.g. AD (TCP/UDP)" }
+      - { cmd: "636 — LDAPS", desc: "LDAP over TLS (TCP)" }
+      - { cmd: "88  — Kerberos", desc: "AD authentication (TCP/UDP)" }
