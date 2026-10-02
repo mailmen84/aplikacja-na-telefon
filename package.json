@@ -1,0 +1,28 @@
+{
+  "name": "homelab-wiki",
+  "version": "1.0.0",
+  "description": "Offline PWA wiki: Linux, Windows, PowerShell, networking, homelab troubleshooting",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "npx --yes serve dist -l 4173",
+    "dev": "node scripts/build.mjs && npx --yes serve dist -l 4173"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mailmen84/aplikacja-na-telefon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mailmen84/aplikacja-na-telefon/issues"
+  },
+  "homepage": "https://github.com/mailmen84/aplikacja-na-telefon#readme",
+  "devDependencies": {
+    "js-yaml": "^4.3.2",
+    "marked": "^18.0.14",
+    "minisearch": "^7.2.0"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}

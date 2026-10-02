@@ -1,0 +1,44 @@
+title: Linux quick reference
+defaults:
+  category: linux
+  platform: linux
+groups:
+  - name: Files & navigation
+    defaults: { tags: [files, navigation] }
+    commands:
+      - { cmd: "ls -lah", desc: "List all files with details and human sizes" }
+      - { cmd: "cd -", desc: "Go back to the previous directory" }
+      - { cmd: "mkdir -p a/b/c", desc: "Create a whole directory path at once" }
+      - { cmd: "cp -r source/ dest/", desc: "Copy a directory recursively" }
+      - { cmd: "rm -rf dir/", desc: "Delete a directory and everything in it", danger: "Irreversible — there is no recycle bin. Double-check the path." }
+      - { cmd: 'find / -name "file*" 2>/dev/null', desc: "Find a file by name, hiding permission errors" }
+      - { cmd: "tail -f /var/log/syslog", desc: "Follow a log file live" }
+      - { cmd: "du -h --max-depth=1 . | sort -rh | head", desc: "What's using space in this directory" }
+  - name: System & processes
+    defaults: { tags: [system, process] }
+    commands:
+      - { cmd: "ps aux --sort=-%cpu | head", desc: "Top processes by CPU" }
+      - { cmd: "ps aux --sort=-%mem | head", desc: "Top processes by memory" }
+      - { cmd: "kill -9 <PID>", desc: "Force-kill a process by PID", danger: "SIGKILL gives the process no chance to clean up." }
+      - { cmd: "sudo systemctl restart ssh", desc: "Restart a service", admin: true }
+      - { cmd: "journalctl -u ssh -f", desc: "Follow a service's logs live" }
+      - { cmd: "df -h", desc: "Disk space of mounted filesystems" }
+      - { cmd: "free -h", desc: "Memory usage (look at 'available')" }
+      - { cmd: "sudo ss -tulnp", desc: "What is listening on which ports", admin: true }
+  - name: Users & packages
+    defaults: { tags: [users, packages] }
+    commands:
+      - { cmd: "id", desc: "Show your UID, GID and groups" }
+      - { cmd: "chmod +x script.sh", desc: "Make a script executable" }
+      - { cmd: "chmod 600 ~/.ssh/id_ed25519", desc: "Lock down an SSH private key" }
+      - { cmd: "sudo usermod -aG sudo name", desc: "Add a user to the sudo group", admin: true }
+      - { cmd: "sudo apt update && sudo apt upgrade", desc: "Update the whole system", admin: true }
+      - { cmd: "sudo apt install name", desc: "Install a package", admin: true }
+      - { cmd: "dpkg -S /path/file", desc: "Find which package owns a file" }
+  - name: Security checks (read-only)
+    defaults: { tags: [security, audit] }
+    commands:
+      - { cmd: "sudo find / -type f -mtime -7 2>/dev/null", desc: "Files modified in the last 7 days (spot changes)", admin: true }
+      - { cmd: 'sudo grep "Failed password" /var/log/auth.log', desc: "Failed SSH logins (brute-force attempts)", admin: true }
+      - { cmd: "sudo find / -perm -4000 -type f 2>/dev/null", desc: "List SUID binaries (privilege-escalation surface)", admin: true }
+      - { cmd: "last | head", desc: "Recent successful logins" }

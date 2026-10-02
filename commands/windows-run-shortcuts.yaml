@@ -1,0 +1,58 @@
+title: Windows Run & console shortcuts
+# Things you type into Win+R, CMD or PowerShell to open a tool directly.
+defaults:
+  category: windows
+  platform: cmd
+groups:
+  - name: Management consoles (.msc)
+    defaults: { tags: [run, msc, console] }
+    commands:
+      - { cmd: "gpedit.msc", desc: "Group Policy Editor (Pro/Enterprise only)" }
+      - { cmd: "secpol.msc", desc: "Local Security Policy" }
+      - { cmd: "compmgmt.msc", desc: "Computer Management (all-in-one console)" }
+      - { cmd: "services.msc", desc: "Services manager" }
+      - { cmd: "devmgmt.msc", desc: "Device Manager" }
+      - { cmd: "diskmgmt.msc", desc: "Disk Management (partitions, drive letters)" }
+      - { cmd: "eventvwr.msc", desc: "Event Viewer (system/app logs)" }
+      - { cmd: "taskschd.msc", desc: "Task Scheduler" }
+      - { cmd: "lusrmgr.msc", desc: "Local Users and Groups (Pro only)" }
+      - { cmd: "perfmon.msc", desc: "Performance Monitor" }
+      - { cmd: "wf.msc", desc: "Windows Defender Firewall with Advanced Security" }
+      - { cmd: "certmgr.msc", desc: "Certificates (current user)" }
+  - name: Control Panel applets (.cpl)
+    defaults: { tags: [run, cpl, control panel, settings] }
+    commands:
+      - { cmd: "ncpa.cpl", desc: "Network Connections (adapters)" }
+      - { cmd: "appwiz.cpl", desc: "Programs and Features (uninstall)" }
+      - { cmd: "sysdm.cpl", desc: "System Properties (rename PC, env vars, remote)" }
+      - { cmd: "powercfg.cpl", desc: "Power Options" }
+      - { cmd: "desk.cpl", desc: "Display settings" }
+      - { cmd: "main.cpl", desc: "Mouse settings" }
+      - { cmd: "mmsys.cpl", desc: "Sound settings" }
+      - { cmd: "timedate.cpl", desc: "Date and Time" }
+      - { cmd: "inetcpl.cpl", desc: "Internet Options" }
+      - { cmd: "intl.cpl", desc: "Region settings" }
+      - { cmd: "hdwwiz.cpl", desc: "Add Hardware Wizard" }
+      - { cmd: "joy.cpl", desc: "Game Controllers" }
+  - name: Handy shell commands
+    defaults: { tags: [run, shell] }
+    commands:
+      - { cmd: "control", desc: "Open the classic Control Panel" }
+      - { cmd: "control printers", desc: "Printers folder" }
+      - { cmd: "control userpasswords2", desc: "Advanced user account settings (netplwiz)" }
+      - { cmd: "ms-settings:", desc: "Open the modern Settings app" }
+      - { cmd: "ms-settings:windowsdefender", desc: "Open Windows Security settings" }
+      - { cmd: "windowsdefender:", desc: "Open Windows Security" }
+      - { cmd: "sysdm.cpl ,3", desc: "Jump straight to the Advanced system tab" }
+      - { cmd: "systempropertiesadvanced", desc: "Environment variables / advanced system" }
+      - { cmd: "regedit", desc: "Registry Editor", danger: "Editing the registry can break Windows. Export a backup first (reg export).", admin: true }
+      - { cmd: "msconfig", desc: "System Configuration (boot, services, startup)" }
+      - { cmd: "msinfo32", desc: "System Information (full spec)" }
+      - { cmd: "resmon", desc: "Resource Monitor" }
+      - { cmd: "taskmgr", desc: "Task Manager (also Ctrl+Shift+Esc)" }
+      - { cmd: "cleanmgr", desc: "Disk Cleanup" }
+      - { cmd: "winver", desc: "Windows version and build" }
+      - { cmd: "osk", desc: "On-screen keyboard" }
+      - { cmd: "snippingtool", desc: "Snipping Tool (screenshots)" }
+      - { cmd: "logoff", desc: "Log off the current user" }
+      - { cmd: "rundll32.exe user32.dll,LockWorkStation", desc: "Lock the PC (same as Win+L)" }

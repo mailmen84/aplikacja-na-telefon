@@ -1,0 +1,78 @@
+title: Windows problem-fix commands
+# Verified, de-duplicated and corrected version of the "200 fix commands" list.
+defaults:
+  category: windows
+  platform: cmd
+groups:
+  - name: System repair & health
+    defaults: { tags: [repair, health], admin: true }
+    commands:
+      - { cmd: "sfc /scannow", desc: "Scan and repair protected system files" }
+      - { cmd: "DISM /Online /Cleanup-Image /RestoreHealth", desc: "Repair the Windows component store (run before sfc)" }
+      - { cmd: "chkdsk C: /f /r", desc: "Check and repair disk errors, recover bad sectors (runs at boot for C:)", danger: "Schedules at next boot for the system drive; /r can take hours on a large HDD." }
+      - { cmd: "systeminfo", desc: "Full system information (OS, RAM, BIOS, uptime)", admin: false }
+      - { cmd: "winver", desc: "Show the Windows version and build", admin: false }
+      - { cmd: "shutdown /r /f /t 0", desc: "Force restart now" }
+      - { cmd: "shutdown /s /f /t 0", desc: "Force shutdown now" }
+      - { cmd: "powercfg /energy", desc: "Generate an energy efficiency report" }
+      - { cmd: "powercfg /batteryreport", desc: "Battery health report (HTML)", admin: false }
+      - { cmd: "cleanmgr", desc: "Open Disk Cleanup", admin: false }
+      - { cmd: "DISM /Online /Cleanup-Image /StartComponentCleanup", desc: "Shrink the WinSxS folder to free space" }
+  - name: Network troubleshooting
+    defaults: { tags: [network, troubleshooting], platform: cmd }
+    commands:
+      - { cmd: "ipconfig /all", desc: "Show full IP configuration (IP, MAC, DNS, DHCP)" }
+      - { cmd: "ipconfig /release", desc: "Release the DHCP-assigned IP address" }
+      - { cmd: "ipconfig /renew", desc: "Renew the DHCP IP address" }
+      - { cmd: "ipconfig /flushdns", desc: "Clear the DNS resolver cache" }
+      - { cmd: "netsh winsock reset", desc: "Reset the Winsock catalog (reboot after)", admin: true }
+      - { cmd: "netsh int ip reset", desc: "Reset the TCP/IP stack (reboot after)", admin: true }
+      - { cmd: "ping 8.8.8.8", desc: "Test internet connectivity (bypasses DNS)" }
+      - { cmd: "tracert google.com", desc: "Trace the route to a host" }
+      - { cmd: "pathping google.com", desc: "Trace route + per-hop packet-loss analysis" }
+      - { cmd: "nslookup google.com", desc: "DNS lookup" }
+      - { cmd: "netstat -ano", desc: "List all connections and listening ports with PIDs" }
+      - { cmd: "route print", desc: "Display the routing table" }
+      - { cmd: "arp -a", desc: "Display the ARP cache (IP ↔ MAC)" }
+      - { cmd: 'netsh wlan show profiles', desc: "List saved Wi-Fi profiles" }
+      - { cmd: 'netsh wlan show profile "NAME" key=clear', desc: "Show a saved Wi-Fi network's password" }
+      - { cmd: 'netsh wlan export profile key=clear folder=C:\\wifi', desc: "Export Wi-Fi profiles — ⚠️ passwords in plain text", danger: "Writes Wi-Fi passwords in clear text to XML files. Delete them when done." }
+      - { cmd: "netsh interface show interface", desc: "Show network interfaces and their state" }
+      - { cmd: "netsh advfirewall reset", desc: "Reset all firewall rules to default", danger: "Removes all custom firewall rules.", admin: true }
+  - name: Windows Update & activation
+    defaults: { tags: [update, activation], admin: true }
+    commands:
+      - { cmd: "usoclient StartScan", desc: "Scan for updates (modern replacement for wuauclt)" }
+      - { cmd: "usoclient StartInstall", desc: "Download and install updates" }
+      - { cmd: "control update", desc: "Open Windows Update", admin: false }
+      - { cmd: "sc query wuauserv", desc: "Check the Windows Update service status", admin: false }
+      - { cmd: "net stop wuauserv && net stop bits", desc: "Stop update services (before clearing the cache)" }
+      - { cmd: "slmgr /xpr", desc: "Check Windows activation status", admin: false }
+      - { cmd: "slmgr /ato", desc: "Attempt online activation" }
+      - { cmd: "slmgr /ipk XXXXX-XXXXX-XXXXX-XXXXX-XXXXX", desc: "Install a product key" }
+    # Note: wuauclt /detectnow and /updatenow no longer work on Windows 10/11 — use usoclient.
+  - name: Boot & startup repair (WinRE)
+    defaults: { tags: [boot, repair, winre], admin: true }
+    commands:
+      - { cmd: "bcdedit /enum all", desc: "Display all boot entries" }
+      - { cmd: "bootrec /fixmbr", desc: "Write a clean Master Boot Record" }
+      - { cmd: "bootrec /fixboot", desc: "Write a new boot sector" }
+      - { cmd: "bootrec /scanos", desc: "Scan for Windows installations" }
+      - { cmd: "bootrec /rebuildbcd", desc: "Rebuild the Boot Configuration Data" }
+      - { cmd: "bcdboot C:\\Windows", desc: "Recreate boot files for the Windows install on C:" }
+      - { cmd: "reagentc /enable", desc: "Enable the Windows Recovery Environment" }
+      - { cmd: "bcdedit /set {default} safeboot minimal", desc: "Force the next boot into Safe Mode" }
+      - { cmd: "bcdedit /deletevalue {default} safeboot", desc: "Exit the Safe Mode boot loop" }
+      - { cmd: "rstrui", desc: "Open System Restore", admin: false }
+  - name: Users & accounts
+    defaults: { tags: [users, accounts], admin: true }
+    commands:
+      - { cmd: "net user", desc: "List local user accounts", admin: false }
+      - { cmd: "net user username password /add", desc: "Create a local user" }
+      - { cmd: "net user username /delete", desc: "Delete a local user" }
+      - { cmd: "net localgroup administrators username /add", desc: "Add a user to the Administrators group" }
+      - { cmd: "net user administrator /active:yes", desc: "Enable the built-in Administrator account" }
+      - { cmd: "net user administrator /active:no", desc: "Disable the built-in Administrator account" }
+      - { cmd: "net accounts /minpwlen:8", desc: "Set the minimum password length" }
+      - { cmd: "net accounts /maxpwage:30", desc: "Set the password expiry (days)" }
+      - { cmd: "whoami /groups", desc: "Show the current user's group memberships", admin: false }

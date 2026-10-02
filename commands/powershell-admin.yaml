@@ -1,0 +1,47 @@
+title: PowerShell admin tools
+defaults:
+  category: powershell
+  platform: powershell
+groups:
+  - name: System & info
+    defaults: { tags: [system, info] }
+    commands:
+      - { cmd: "Get-ComputerInfo", desc: "Full computer/OS information" }
+      - { cmd: "Get-CimInstance Win32_OperatingSystem", desc: "OS details (modern replacement for Get-WmiObject)" }
+      - { cmd: "Get-HotFix", desc: "List installed Windows updates/hotfixes" }
+      - { cmd: "Get-ChildItem Env:", desc: "Show all environment variables" }
+      - { cmd: "Get-Command *network*", desc: "Find commands with 'network' in the name" }
+      - { cmd: "Get-Help Get-Process -Examples", desc: "Show usage examples for a cmdlet" }
+      - { cmd: "Set-ExecutionPolicy -Scope CurrentUser RemoteSigned", desc: "Allow local scripts to run for your user" }
+      - { cmd: "Restart-Computer -Force", desc: "Force a restart", danger: "Closes all apps immediately." }
+  - name: Processes & services
+    defaults: { tags: [process, service] }
+    commands:
+      - { cmd: "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10", desc: "Top 10 processes by CPU" }
+      - { cmd: "Get-Process | Sort-Object WS -Descending | Select-Object -First 10", desc: "Top 10 processes by memory" }
+      - { cmd: "Stop-Process -Name notepad", desc: "Kill a process by name" }
+      - { cmd: "Get-Service | Where-Object {$_.Status -eq 'Running'}", desc: "List running services" }
+      - { cmd: "Restart-Service Spooler", desc: "Restart the print spooler service", admin: true }
+  - name: Disk, network & users
+    defaults: { tags: [disk, network, users] }
+    commands:
+      - { cmd: "Get-Disk", desc: "List physical disks" }
+      - { cmd: "Get-PhysicalDisk | Select FriendlyName, HealthStatus", desc: "Check disk health" }
+      - { cmd: "Get-NetAdapter", desc: "List network adapters, status and speed" }
+      - { cmd: "Test-Connection google.com -Count 2", desc: "Ping a host" }
+      - { cmd: "Test-NetConnection example.com -Port 443", desc: "Test whether a TCP port is reachable" }
+      - { cmd: "Get-NetTCPConnection -State Listen", desc: "Show listening ports" }
+      - { cmd: "Resolve-DnsName google.com", desc: "DNS lookup" }
+      - { cmd: "Get-LocalUser", desc: "List local user accounts", admin: true }
+      - { cmd: "Enable-LocalUser -Name Administrator", desc: "Enable a local account", admin: true }
+      - { cmd: "Disable-LocalUser -Name Guest", desc: "Disable a local account", admin: true }
+  - name: Misc utilities
+    defaults: { tags: [utility, gui], platform: windows }
+    commands:
+      - { cmd: "calc", desc: "Calculator" }
+      - { cmd: "notepad", desc: "Notepad" }
+      - { cmd: "mspaint", desc: "Paint" }
+      - { cmd: "osk", desc: "On-screen keyboard" }
+      - { cmd: "magnify", desc: "Magnifier" }
+      - { cmd: "snippingtool", desc: "Snipping Tool (screenshots)" }
+      - { cmd: "mrt", desc: "Malicious Software Removal Tool", admin: true }
