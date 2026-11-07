@@ -1,4 +1,4 @@
-title: PowerShell admin & blue-team
+title: PowerShell reference
 # From the HexSec command series — system, security, logs, remote admin.
 defaults:
   category: powershell
@@ -7,6 +7,10 @@ groups:
   - name: System information
     defaults: { tags: [system, info] }
     commands:
+      - { cmd: "Get-HotFix", desc: "List installed Windows updates/hotfixes" }
+      - { cmd: "Get-ChildItem Env:", desc: "Show all environment variables" }
+      - { cmd: "Set-ExecutionPolicy -Scope CurrentUser RemoteSigned", desc: "Allow local scripts to run for your user", admin: true }
+      - { cmd: "Restart-Computer -Force", desc: "Force a restart", danger: "Closes all apps immediately.", admin: true }
       - { cmd: "Get-ComputerInfo", desc: "Detailed Windows configuration" }
       - { cmd: "Get-CimInstance Win32_BIOS", desc: "BIOS details (modern replacement for Get-WmiObject)" }
       - { cmd: "Get-CimInstance Win32_OperatingSystem", desc: "OS information" }
@@ -27,6 +31,17 @@ groups:
       - { cmd: "Stop-Process -Name notepad", desc: "Stop a process by name" }
       - { cmd: "taskkill /PID 1234 /F", desc: "Force-kill a process by PID" }
       - { cmd: "Get-CimInstance Win32_StartupCommand", desc: "What runs at startup (persistence check)" }
+      - { cmd: "Restart-Service Spooler", desc: "Restart a service (print spooler example)", admin: true }
+  - name: Disk & network
+    defaults: { tags: [disk, network] }
+    commands:
+      - { cmd: "Get-Disk", desc: "List physical disks" }
+      - { cmd: "Get-PhysicalDisk | Select FriendlyName, HealthStatus", desc: "Check disk health" }
+      - { cmd: "Get-NetAdapter", desc: "List network adapters, status and speed" }
+      - { cmd: "Test-Connection google.com -Count 2", desc: "Ping a host" }
+      - { cmd: "Test-NetConnection example.com -Port 443", desc: "Test whether a TCP port is reachable" }
+      - { cmd: "Get-NetTCPConnection -State Listen", desc: "Show listening ports" }
+      - { cmd: "Resolve-DnsName google.com", desc: "DNS lookup" }
   - name: Security & Defender
     defaults: { tags: [security, defender, blue-team], admin: true }
     commands:
@@ -51,6 +66,7 @@ groups:
       - { cmd: "quser", desc: "Logged-in user sessions", admin: false }
       - { cmd: 'Get-LocalUser | Where Enabled -eq $true', desc: "Enabled accounts only" }
       - { cmd: "Disable-LocalUser Guest", desc: "Disable a local account" }
+      - { cmd: "Enable-LocalUser -Name Administrator", desc: "Enable a local account" }
       - { cmd: "net accounts", desc: "Password policy overview", admin: false }
       - { cmd: "Get-Acl C:\\Users", desc: "Folder permission review", admin: false }
       - { cmd: "icacls C:\\Users", desc: "NTFS permissions check", admin: false }
@@ -89,3 +105,11 @@ groups:
       - { cmd: "Get-ComputerInfo | ConvertTo-Json", desc: "Convert objects to JSON" }
       - { cmd: 'Get-Process | Group-Object Company', desc: "Group results quickly" }
       - { cmd: 'Read-Host "Input"', desc: "Prompt for user input" }
+  - name: Built-in GUI utilities
+    defaults: { tags: [utility, gui], platform: windows }
+    commands:
+      - { cmd: "calc", desc: "Calculator" }
+      - { cmd: "notepad", desc: "Notepad" }
+      - { cmd: "mspaint", desc: "Paint" }
+      - { cmd: "magnify", desc: "Magnifier" }
+      - { cmd: "mrt", desc: "Malicious Software Removal Tool", admin: true }
