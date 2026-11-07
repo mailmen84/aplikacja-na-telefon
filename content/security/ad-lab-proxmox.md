@@ -2,7 +2,7 @@
 title: Build an Active Directory lab on Proxmox
 summary: "Isolated AD DS practice lab: DC, domain-joined clients, snapshots, safe deliberate misconfigs"
 tags: [active directory, ad, proxmox, lab, domain controller, windows server, snapshot]
-order: 6
+order: 12
 ---
 
 This chapter walks through standing up an isolated Active Directory environment on your existing Proxmox cluster, purely for learning and practicing the AD attack techniques mentioned in Chapter 10 (Kerberoasting, AS-REP roasting, pass-the-hash, BloodHound attack-path mapping) in a safe, self-contained space that can't affect your production homelab network.

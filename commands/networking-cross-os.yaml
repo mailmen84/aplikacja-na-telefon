@@ -1,0 +1,19 @@
+title: Cross-OS network commands
+# Same task, three operating systems — Windows / Linux / macOS.
+defaults:
+  category: networking
+  platform: shell
+  tags: [cross-os, reference, network]
+groups:
+  - name: Windows vs Linux vs macOS
+    commands:
+      - { cmd: "Look up DNS", desc: "Windows: nslookup  ·  Linux: dig  ·  macOS: dig" }
+      - { cmd: "Interfaces & IPs", desc: "Windows: ipconfig /all  ·  Linux: ip addr  ·  macOS: ifconfig -a" }
+      - { cmd: "View routing table", desc: "Windows: route print  ·  Linux: ip route  ·  macOS: netstat -rn" }
+      - { cmd: "Test connectivity", desc: "All: ping <host>" }
+      - { cmd: "Trace network path", desc: "Windows: tracert  ·  Linux/macOS: traceroute" }
+      - { cmd: "Connections & ports", desc: "Windows: netstat -ano  ·  Linux: ss -tulnp  ·  macOS: netstat -an" }
+      - { cmd: "IPv4 neighbours (ARP)", desc: "Windows: arp -a  ·  Linux: ip neigh  ·  macOS: arp -a" }
+      - { cmd: "IPv6 neighbours", desc: "Windows: netsh interface ipv6 show neighbors  ·  Linux: ip -6 neigh  ·  macOS: ndp -a" }
+      - { cmd: "Capture packets", desc: "Windows: pktmon  ·  Linux/macOS: tcpdump" }
+      - { cmd: "Test a TCP port", desc: "Windows (PS): Test-NetConnection host -Port 443  ·  Linux: nc -zv host 443" }

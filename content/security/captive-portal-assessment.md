@@ -2,7 +2,7 @@
 title: Captive portal security assessment
 summary: "Authorized testing of hotel/café-style open portals: client isolation, DNS leakage, MAC trust"
 tags: [pentest, captive portal, wifi, dns, mac, client isolation, kali, authorized]
-order: 3
+order: 13
 ---
 
 > **Authorization note:** Testing a captive portal network (hotel, airport, café, train) without written permission from the network owner can violate computer misuse laws and the venue's terms of service, even when no encryption is being "broken." Only run these steps against networks you own, operate, or have explicit authorization to test (e.g. your own homelab captive portal, or a client engagement with signed scope).
