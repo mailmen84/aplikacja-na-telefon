@@ -1,0 +1,115 @@
+title: PowerShell reference
+# From the HexSec command series — system, security, logs, remote admin.
+defaults:
+  category: powershell
+  platform: powershell
+groups:
+  - name: System information
+    defaults: { tags: [system, info] }
+    commands:
+      - { cmd: "Get-HotFix", desc: "List installed Windows updates/hotfixes" }
+      - { cmd: "Get-ChildItem Env:", desc: "Show all environment variables" }
+      - { cmd: "Set-ExecutionPolicy -Scope CurrentUser RemoteSigned", desc: "Allow local scripts to run for your user", admin: true }
+      - { cmd: "Restart-Computer -Force", desc: "Force a restart", danger: "Closes all apps immediately.", admin: true }
+      - { cmd: "Get-ComputerInfo", desc: "Detailed Windows configuration" }
+      - { cmd: "Get-CimInstance Win32_BIOS", desc: "BIOS details (modern replacement for Get-WmiObject)" }
+      - { cmd: "Get-CimInstance Win32_OperatingSystem", desc: "OS information" }
+      - { cmd: "Get-CimInstance Win32_Processor", desc: "CPU information" }
+      - { cmd: "Get-CimInstance Win32_PhysicalMemory", desc: "RAM module details" }
+      - { cmd: "Get-CimInstance Win32_LogicalDisk", desc: "Disk usage overview" }
+      - { cmd: "Get-Uptime", desc: "Device uptime" }
+      - { cmd: "Get-PSVersionTable", desc: "PowerShell version info" }
+      - { cmd: "Get-TimeZone", desc: "Timezone settings" }
+  - name: Processes & services
+    defaults: { tags: [process, service] }
+    commands:
+      - { cmd: 'Get-Process | Sort CPU -Descending | Select -First 10', desc: "Highest-CPU processes" }
+      - { cmd: 'Get-Process | Sort WorkingSet -Descending | Select -First 10', desc: "Highest-memory processes" }
+      - { cmd: 'Get-Service | Where Status -eq "Running"', desc: "Active services only" }
+      - { cmd: 'Get-Service | Where StartType -eq "Automatic"', desc: "Auto-start services" }
+      - { cmd: "Get-CimInstance Win32_Service", desc: "Detailed service info (path, account)" }
+      - { cmd: "Stop-Process -Name notepad", desc: "Stop a process by name" }
+      - { cmd: "taskkill /PID 1234 /F", desc: "Force-kill a process by PID" }
+      - { cmd: "Get-CimInstance Win32_StartupCommand", desc: "What runs at startup (persistence check)" }
+      - { cmd: "Restart-Service Spooler", desc: "Restart a service (print spooler example)", admin: true }
+  - name: Disk & network
+    defaults: { tags: [disk, network] }
+    commands:
+      - { cmd: "Get-Disk", desc: "List physical disks" }
+      - { cmd: "Get-PhysicalDisk | Select FriendlyName, HealthStatus", desc: "Check disk health" }
+      - { cmd: "Get-NetAdapter", desc: "List network adapters, status and speed" }
+      - { cmd: "Test-Connection google.com -Count 2", desc: "Ping a host" }
+      - { cmd: "Test-NetConnection example.com -Port 443", desc: "Test whether a TCP port is reachable" }
+      - { cmd: "Get-NetTCPConnection -State Listen", desc: "Show listening ports" }
+      - { cmd: "Resolve-DnsName google.com", desc: "DNS lookup" }
+  - name: Security & Defender
+    defaults: { tags: [security, defender, blue-team], admin: true }
+    commands:
+      - { cmd: "Get-MpComputerStatus", desc: "Microsoft Defender status" }
+      - { cmd: "Get-MpThreatDetection", desc: "Detected threats overview" }
+      - { cmd: "Start-MpScan", desc: "Run a Defender scan" }
+      - { cmd: "Update-MpSignature", desc: "Update Defender signatures" }
+      - { cmd: "Get-NetFirewallProfile", desc: "Firewall profile status" }
+      - { cmd: "Get-NetFirewallRule", desc: "List firewall rules" }
+      - { cmd: "Get-BitLockerVolume", desc: "BitLocker protection status" }
+      - { cmd: "Get-FileHash file.exe", desc: "Verify file integrity (SHA-256)", admin: false }
+      - { cmd: "Get-AuthenticodeSignature file.exe", desc: "Check a file's digital signature", admin: false }
+      - { cmd: "Get-ExecutionPolicy -List", desc: "Script execution policy per scope", admin: false }
+  - name: Users & permissions
+    defaults: { tags: [users, permissions], admin: true }
+    commands:
+      - { cmd: "net user", desc: "List local users", admin: false }
+      - { cmd: "net localgroup administrators", desc: "Admin group members", admin: false }
+      - { cmd: "Get-LocalGroupMember Administrators", desc: "Detailed admin users" }
+      - { cmd: "whoami /priv", desc: "Current user privileges", admin: false }
+      - { cmd: "whoami /groups", desc: "Current user group memberships", admin: false }
+      - { cmd: "quser", desc: "Logged-in user sessions", admin: false }
+      - { cmd: 'Get-LocalUser | Where Enabled -eq $true', desc: "Enabled accounts only" }
+      - { cmd: "Disable-LocalUser Guest", desc: "Disable a local account" }
+      - { cmd: "Enable-LocalUser -Name Administrator", desc: "Enable a local account" }
+      - { cmd: "net accounts", desc: "Password policy overview", admin: false }
+      - { cmd: "Get-Acl C:\\Users", desc: "Folder permission review", admin: false }
+      - { cmd: "icacls C:\\Users", desc: "NTFS permissions check", admin: false }
+      - { cmd: "Get-SmbShare", desc: "Shared folders overview" }
+  - name: Event logs & monitoring
+    defaults: { tags: [logs, events, monitoring, blue-team], admin: true }
+    commands:
+      - { cmd: 'Get-WinEvent -FilterHashtable @{LogName="Security";Id=4624} -MaxEvents 20', desc: "Successful logon events" }
+      - { cmd: 'Get-WinEvent -FilterHashtable @{LogName="Security";Id=4625} -MaxEvents 20', desc: "Failed logon events (brute force)" }
+      - { cmd: "Get-WinEvent -LogName System -MaxEvents 20", desc: "Recent system events" }
+      - { cmd: "Get-WinEvent -ListLog *", desc: "Show all available logs" }
+      - { cmd: "Get-EventLog -LogName System -Newest 50", desc: "Latest system log entries" }
+      - { cmd: "wevtutil qe System /c:10", desc: "Query 10 recent System events" }
+      - { cmd: "Start-Transcript", desc: "Record the PowerShell session to a file", admin: false }
+      - { cmd: "Stop-Transcript", desc: "Stop session logging", admin: false }
+      - { cmd: "Clear-EventLog Application", desc: "Clear a log", danger: "Destroys audit history — avoid on systems being investigated." }
+  - name: Remote administration
+    defaults: { tags: [remote, winrm, psremoting], admin: true }
+    commands:
+      - { cmd: "Enter-PSSession host", desc: "Interactive remote session (WinRM)" }
+      - { cmd: "Invoke-Command -ComputerName host -ScriptBlock { hostname }", desc: "Run a command/script block remotely" }
+      - { cmd: "Test-WSMan host", desc: "Verify WinRM is reachable", admin: false }
+      - { cmd: "New-PSSession host", desc: "Create a reusable remote session" }
+      - { cmd: "Get-PSSession", desc: "List active PowerShell sessions", admin: false }
+      - { cmd: "Enable-PSRemoting", desc: "Enable remote management on this host" }
+      - { cmd: "Restart-Computer -ComputerName host", desc: "Reboot a remote host" }
+      - { cmd: "Test-Connection host", desc: "Ping a remote host", admin: false }
+  - name: Scripting & data
+    defaults: { tags: [scripting, csv, json] }
+    commands:
+      - { cmd: "Get-Command *network*", desc: "Find commands by name" }
+      - { cmd: "Get-Help Get-Process -Examples", desc: "Usage examples for a cmdlet" }
+      - { cmd: "Get-Member", desc: "Show an object's properties and methods (pipe into it)" }
+      - { cmd: 'Get-Process | Export-Csv procs.csv -NoTypeInformation', desc: "Export data to CSV" }
+      - { cmd: "Import-Csv users.csv", desc: "Read CSV data" }
+      - { cmd: "Get-ComputerInfo | ConvertTo-Json", desc: "Convert objects to JSON" }
+      - { cmd: 'Get-Process | Group-Object Company', desc: "Group results quickly" }
+      - { cmd: 'Read-Host "Input"', desc: "Prompt for user input" }
+  - name: Built-in GUI utilities
+    defaults: { tags: [utility, gui], platform: windows }
+    commands:
+      - { cmd: "calc", desc: "Calculator" }
+      - { cmd: "notepad", desc: "Notepad" }
+      - { cmd: "mspaint", desc: "Paint" }
+      - { cmd: "magnify", desc: "Magnifier" }
+      - { cmd: "mrt", desc: "Malicious Software Removal Tool", admin: true }

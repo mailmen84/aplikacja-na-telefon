@@ -64,18 +64,18 @@ The app is pure static files, so it can go anywhere. The included GitHub Actions
 One-time setup:
 
 1. Create a Cloudflare account → **Workers & Pages** → create a Pages project named
-   `homelab-wiki` (direct-upload type; no need to connect the repo).
+   `mailmen84-homelab` (direct-upload type; no need to connect the repo).
 2. Create an API token (**My Profile → API Tokens →** template *"Edit Cloudflare Workers"*,
    or a custom token with the *Pages → Edit* permission). Note your **Account ID**.
 3. In the GitHub repo → **Settings → Secrets and variables → Actions**, add:
    - `CLOUDFLARE_API_TOKEN`
    - `CLOUDFLARE_ACCOUNT_ID`
 4. Push to `main`. The workflow builds and deploys; your app is at
-   `https://homelab-wiki.pages.dev` (you can add a custom domain later).
+   `https://mailmen84-homelab.pages.dev` (you can add a custom domain later).
 
 Until the secrets exist, the workflow still builds (so it catches content errors) and just
 skips the deploy step. You can also deploy manually with
-`npx wrangler pages deploy dist --project-name=homelab-wiki`.
+`npx wrangler pages deploy dist --project-name=mailmen84-homelab`.
 
 ## Content sources
 

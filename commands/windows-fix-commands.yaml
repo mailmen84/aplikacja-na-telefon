@@ -11,12 +11,10 @@ groups:
       - { cmd: "DISM /Online /Cleanup-Image /RestoreHealth", desc: "Repair the Windows component store (run before sfc)" }
       - { cmd: "chkdsk C: /f /r", desc: "Check and repair disk errors, recover bad sectors (runs at boot for C:)", danger: "Schedules at next boot for the system drive; /r can take hours on a large HDD." }
       - { cmd: "systeminfo", desc: "Full system information (OS, RAM, BIOS, uptime)", admin: false }
-      - { cmd: "winver", desc: "Show the Windows version and build", admin: false }
       - { cmd: "shutdown /r /f /t 0", desc: "Force restart now" }
       - { cmd: "shutdown /s /f /t 0", desc: "Force shutdown now" }
       - { cmd: "powercfg /energy", desc: "Generate an energy efficiency report" }
       - { cmd: "powercfg /batteryreport", desc: "Battery health report (HTML)", admin: false }
-      - { cmd: "cleanmgr", desc: "Open Disk Cleanup", admin: false }
       - { cmd: "DISM /Online /Cleanup-Image /StartComponentCleanup", desc: "Shrink the WinSxS folder to free space" }
   - name: Network troubleshooting
     defaults: { tags: [network, troubleshooting], platform: cmd }
@@ -67,7 +65,6 @@ groups:
   - name: Users & accounts
     defaults: { tags: [users, accounts], admin: true }
     commands:
-      - { cmd: "net user", desc: "List local user accounts", admin: false }
       - { cmd: "net user username password /add", desc: "Create a local user" }
       - { cmd: "net user username /delete", desc: "Delete a local user" }
       - { cmd: "net localgroup administrators username /add", desc: "Add a user to the Administrators group" }
@@ -75,4 +72,3 @@ groups:
       - { cmd: "net user administrator /active:no", desc: "Disable the built-in Administrator account" }
       - { cmd: "net accounts /minpwlen:8", desc: "Set the minimum password length" }
       - { cmd: "net accounts /maxpwage:30", desc: "Set the password expiry (days)" }
-      - { cmd: "whoami /groups", desc: "Show the current user's group memberships", admin: false }

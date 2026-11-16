@@ -2,7 +2,7 @@
 title: Defensive network hardening
 summary: "Lock down your own switches & pfSense: port security, 802.1X, DHCP snooping, DAI, egress filtering"
 tags: [hardening, port security, 802.1x, dhcp snooping, dai, dtp, pfsense, cdp, lldp]
-order: 2
+order: 10
 ---
 
 This chapter closes the loop: for every attack technique described in Chapters 7 (Captive Portal) and 8 (Wired LAN), here is the corresponding defensive control, how to configure it on a typical homelab stack (Cisco access switch + pfSense firewall), and how to re-run the earlier attack afterward to confirm the control actually works. Treat this as a lab exercise — build the attack, observe it succeed, apply the fix, observe it fail.

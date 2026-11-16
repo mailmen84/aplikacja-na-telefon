@@ -10,7 +10,6 @@ groups:
       - { cmd: "lsblk -f", desc: "...plus filesystem type, label and UUID" }
       - { cmd: "sudo fdisk -l", desc: "Partition tables of all disks", admin: true }
       - { cmd: "sudo blkid", desc: "UUID and filesystem type of each partition", admin: true }
-      - { cmd: "df -h", desc: "Disk usage of mounted filesystems" }
       - { cmd: "df -i", desc: "Inode usage (full disk with free space = out of inodes)" }
       - { cmd: "du -sh <dir>", desc: "Total size of a directory" }
       - { cmd: "ncdu /", desc: "Interactive disk-usage explorer", note: "sudo apt install ncdu" }

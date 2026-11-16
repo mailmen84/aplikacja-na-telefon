@@ -1,0 +1,42 @@
+title: Networking acronyms
+# Searchable glossary — type "OSPF" or "ARP" to get the meaning.
+defaults:
+  category: networking
+  platform: shell
+  tags: [acronym, glossary, reference]
+groups:
+  - name: Addressing & core
+    commands:
+      - { cmd: "IP — Internet Protocol", desc: "Addresses and routes packets across networks" }
+      - { cmd: "TCP — Transmission Control Protocol", desc: "Reliable, connection-oriented delivery" }
+      - { cmd: "UDP — User Datagram Protocol", desc: "Fast, connectionless delivery (no guarantees)" }
+      - { cmd: "MAC — Media Access Control", desc: "48-bit Layer-2 hardware address of a NIC" }
+      - { cmd: "NAT — Network Address Translation", desc: "Maps private IPs to a public IP" }
+      - { cmd: "CIDR — Classless Inter-Domain Routing", desc: "Prefix-length addressing (/24) instead of classes" }
+      - { cmd: "VLSM — Variable Length Subnet Masking", desc: "Different mask lengths in the same network" }
+      - { cmd: "MTU — Maximum Transmission Unit", desc: "Largest packet size a link carries" }
+      - { cmd: "TTL — Time To Live", desc: "Hop limit before a packet is dropped" }
+  - name: Services & protocols
+    commands:
+      - { cmd: "DNS — Domain Name System", desc: "Translates names to IP addresses" }
+      - { cmd: "DHCP — Dynamic Host Configuration Protocol", desc: "Auto-assigns IP addresses" }
+      - { cmd: "HTTP / HTTPS", desc: "Web traffic (HTTPS = encrypted with TLS)" }
+      - { cmd: "FTP — File Transfer Protocol", desc: "Transfers files (use SFTP/FTPS for security)" }
+      - { cmd: "SMTP / POP3 / IMAP", desc: "Email: send / download / access on server" }
+      - { cmd: "ARP — Address Resolution Protocol", desc: "Finds the MAC for an IPv4 address on the LAN" }
+      - { cmd: "ICMP — Internet Control Message Protocol", desc: "Errors and diagnostics (ping, traceroute)" }
+      - { cmd: "SNMP — Simple Network Management Protocol", desc: "Monitors and manages network devices" }
+      - { cmd: "NTP — Network Time Protocol", desc: "Synchronises clocks" }
+      - { cmd: "QoS — Quality of Service", desc: "Prioritises traffic (e.g. voice over bulk)" }
+  - name: Routing & switching
+    commands:
+      - { cmd: "LAN / WAN / MAN / PAN", desc: "Local / Wide / Metropolitan / Personal area networks" }
+      - { cmd: "VLAN — Virtual LAN", desc: "Logical Layer-2 segmentation on a switch" }
+      - { cmd: "STP — Spanning Tree Protocol", desc: "Prevents switching loops" }
+      - { cmd: "OSPF — Open Shortest Path First", desc: "Link-state interior routing protocol" }
+      - { cmd: "RIP — Routing Information Protocol", desc: "Simple distance-vector routing (hop count)" }
+      - { cmd: "EIGRP", desc: "Cisco hybrid routing protocol" }
+      - { cmd: "BGP — Border Gateway Protocol", desc: "Routing between autonomous systems (the internet)" }
+      - { cmd: "PoE — Power over Ethernet", desc: "Delivers power over the data cable" }
+      - { cmd: "SSID — Service Set Identifier", desc: "A Wi-Fi network's name" }
+      - { cmd: "VPN — Virtual Private Network", desc: "Encrypted tunnel over a public network" }

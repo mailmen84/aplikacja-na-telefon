@@ -2,7 +2,7 @@
 title: Periodic validation checklist
 summary: A repeatable test cycle to re-verify your homelab hardening over time
 tags: [checklist, validation, wifi, lan, pfsense, monitoring, homelab]
-order: 5
+order: 11
 ---
 
 This chapter ties Chapters 6–9 together into a repeatable runbook. The goal isn't to run every test every day — it's to have a fixed, written procedure you (or anyone else looking after the lab later) can follow on a schedule, so configuration drift gets caught before it becomes a real gap. Run this quarterly at minimum, and any time you touch switch, pfSense, or Wi-Fi configuration.

@@ -1,0 +1,41 @@
+title: DevOps & orchestration quick reference
+# Adjacent to homelab self-hosting: kubectl, Ansible, Terraform, Jenkins basics.
+defaults:
+  category: homelab
+  platform: shell
+groups:
+  - name: Kubernetes (kubectl)
+    defaults: { tags: [kubernetes, k8s, kubectl, containers] }
+    commands:
+      - { cmd: "kubectl get pods -A", desc: "List pods across all namespaces" }
+      - { cmd: "kubectl get deployments", desc: "List deployments" }
+      - { cmd: "kubectl describe pod <pod>", desc: "Detailed pod state and events" }
+      - { cmd: "kubectl logs -f <pod>", desc: "Follow a pod's logs live" }
+      - { cmd: "kubectl exec -it <pod> -- sh", desc: "Shell into a running pod" }
+      - { cmd: "kubectl apply -f deployment.yaml", desc: "Create/update resources from a manifest" }
+      - { cmd: "kubectl rollout status deployment/<name>", desc: "Watch a rollout" }
+      - { cmd: "kubectl get services", desc: "List services" }
+      - { cmd: "kubectl top nodes", desc: "Node CPU/memory usage (needs metrics-server)" }
+  - name: Ansible
+    defaults: { tags: [ansible, automation, config] }
+    commands:
+      - { cmd: "ansible all -m ping", desc: "Check connectivity to all hosts in the inventory" }
+      - { cmd: "ansible-playbook site.yml", desc: "Run a playbook" }
+      - { cmd: "ansible-playbook site.yml --check", desc: "Dry-run (show changes without applying)" }
+      - { cmd: "ansible all -m setup", desc: "Gather facts about hosts" }
+      - { cmd: "ansible-inventory --list", desc: "Show the parsed inventory" }
+  - name: Terraform
+    defaults: { tags: [terraform, iac, infrastructure] }
+    commands:
+      - { cmd: "terraform init", desc: "Initialise the working directory / providers" }
+      - { cmd: "terraform plan", desc: "Preview changes before applying" }
+      - { cmd: "terraform apply", desc: "Create/update infrastructure", danger: "Changes real infrastructure — review the plan first." }
+      - { cmd: "terraform validate", desc: "Check configuration syntax" }
+      - { cmd: "terraform destroy", desc: "Tear down managed infrastructure", danger: "Deletes everything Terraform manages in this state." }
+      - { cmd: "terraform fmt", desc: "Format configuration files" }
+  - name: CI/CD & Git flow
+    defaults: { tags: [ci, cd, jenkins, git, pipeline] }
+    commands:
+      - { cmd: "git checkout -b feature/my-feature", desc: "Create and switch to a feature branch" }
+      - { cmd: "git push -u origin feature/my-feature", desc: "Push a branch and set upstream" }
+      - { cmd: "Source → Build → Test → Deploy", desc: "The classic CI/CD pipeline stages (e.g. Jenkins)" }

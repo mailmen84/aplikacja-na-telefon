@@ -18,8 +18,11 @@ jobs:
       - run: npm ci
       - run: npm run build
       # Deploy to Cloudflare Pages — free, works from a PRIVATE repo.
-      # One-time setup: create the two repo secrets below and a Pages
-      # project named "homelab-wiki". See README "Hosting".
+      # One-time setup: add the two repo secrets (see README "Hosting").
+      # The project is auto-created on first run if it doesn't exist.
+      - name: Create Pages project if missing
+        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
+        run: npx --yes wrangler@3 pages project create mailmen84-homelab --production-branch=main || true
       - name: Deploy to Cloudflare Pages
         if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
-        run: npx --yes wrangler@3 pages deploy dist --project-name=homelab-wiki --branch=main
+        run: npx --yes wrangler@3 pages deploy dist --project-name=mailmen84-homelab --branch=main

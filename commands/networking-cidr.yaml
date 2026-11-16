@@ -1,0 +1,33 @@
+title: CIDR prefix reference
+# /8 to /32 — mask, host bits, usable hosts. Searchable ("/26", "255.255.255.192").
+defaults:
+  category: networking
+  platform: shell
+  tags: [cidr, subnet mask, prefix, reference, hosts]
+groups:
+  - name: Common host subnets (/24–/30)
+    commands:
+      - { cmd: "/24  255.255.255.0", desc: "256 total · 254 usable · block 256 (small LAN)" }
+      - { cmd: "/25  255.255.255.128", desc: "128 total · 126 usable · block 128" }
+      - { cmd: "/26  255.255.255.192", desc: "64 total · 62 usable · block 64 (dept / VLAN)" }
+      - { cmd: "/27  255.255.255.224", desc: "32 total · 30 usable · block 32" }
+      - { cmd: "/28  255.255.255.240", desc: "16 total · 14 usable · block 16" }
+      - { cmd: "/29  255.255.255.248", desc: "8 total · 6 usable · block 8 (point-to-point groups)" }
+      - { cmd: "/30  255.255.255.252", desc: "4 total · 2 usable · router-to-router links" }
+      - { cmd: "/31  255.255.255.254", desc: "2 usable (RFC 3021 point-to-point)" }
+      - { cmd: "/32  255.255.255.255", desc: "1 address — a single host / loopback" }
+  - name: Larger networks (/8–/23)
+    commands:
+      - { cmd: "/23  255.255.254.0", desc: "512 total · 510 usable (two /24s)" }
+      - { cmd: "/22  255.255.252.0", desc: "1,024 total · 1,022 usable (four /24s)" }
+      - { cmd: "/21  255.255.248.0", desc: "2,048 total · 2,046 usable (eight /24s)" }
+      - { cmd: "/20  255.255.240.0", desc: "4,096 total · 4,094 usable" }
+      - { cmd: "/16  255.255.0.0", desc: "65,536 total · 65,534 usable (Class B default)" }
+      - { cmd: "/12  255.240.0.0", desc: "1,048,576 total (172.16.0.0/12 private range)" }
+      - { cmd: "/8   255.0.0.0", desc: "16,777,216 total (Class A default; 10.0.0.0/8 private)" }
+  - name: Formulas
+    commands:
+      - { cmd: "Usable hosts = 2^(host bits) − 2", desc: "Subtract network + broadcast (except /31 and /32)" }
+      - { cmd: "Total subnets = 2^(borrowed bits)", desc: "How many subnets borrowing n bits gives" }
+      - { cmd: "Block size = 256 − mask value", desc: "Increment between subnets, in the interesting octet" }
+      - { cmd: "Wildcard = inverse of the mask", desc: "/26 → 0.0.0.63 (used in ACLs/OSPF)" }

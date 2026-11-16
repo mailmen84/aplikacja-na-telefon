@@ -2,7 +2,7 @@
 title: Wired LAN security assessment
 summary: "Authorized switch/NAC testing: recon, 802.1X bypass, DHCP, VLAN hopping, MITM, egress"
 tags: [pentest, lan, 802.1x, nac, dhcp, vlan hopping, mitm, egress, authorized]
-order: 4
+order: 14
 ---
 
 > **Authorization note:** Physically connecting to a network's Ethernet infrastructure and attempting to bypass NAC, VLAN, or firewall controls is a much more sensitive test than Wi-Fi recon — it demonstrates what an attacker with physical access (an "evil maid", a rogue contractor, someone plugging into an unused conference-room jack) could achieve. Only perform this against your own homelab or under an explicit, signed scope of work.
