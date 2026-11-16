@@ -1,0 +1,58 @@
+title: Bash scripting quick reference
+# Companion to content/scripting/bash-scripting-advanced.md
+defaults:
+  category: scripting
+  platform: shell
+groups:
+  - name: Safety & debugging
+    defaults: { tags: [bash, script, debug, strict mode] }
+    commands:
+      - { cmd: "set -euo pipefail", desc: "Strict mode: stop on errors, unset variables and failed pipeline stages" }
+      - { cmd: "bash -n script.sh", desc: "Check syntax without running anything" }
+      - { cmd: "bash -x script.sh", desc: "Trace: print each command as it runs" }
+      - { cmd: "shellcheck script.sh", desc: "Static analysis - finds quoting and logic bugs" }
+      - { cmd: "trap 'rm -f \"$tmp\"' EXIT", desc: "Run cleanup whenever the script exits, even on error" }
+      - { cmd: "tmp=$(mktemp)", desc: "Create a safe, unique temporary file (mktemp -d for a directory)" }
+      - { cmd: "command -v jq > /dev/null || { echo 'jq missing' >&2; exit 1; }", desc: "Abort early if a required tool is not installed" }
+      - { cmd: "rm -rf \"${DIR:?}/\"", desc: "Refuse to run if DIR is empty - protects against rm -rf /" }
+  - name: Parameter expansion
+    defaults: { tags: [bash, variables, string, expansion] }
+    commands:
+      - { cmd: "${var:-default}", desc: "Use a default when the variable is unset or empty" }
+      - { cmd: "${1:?usage: script <host>}", desc: "Exit with a message when an argument is missing" }
+      - { cmd: "${#var}", desc: "Length of the string" }
+      - { cmd: "${path##*/}", desc: "File name without the directory (like basename)" }
+      - { cmd: "${path%/*}", desc: "Directory without the file name (like dirname)" }
+      - { cmd: "${file%.*}", desc: "Strip the last extension" }
+      - { cmd: "${file##*.}", desc: "Only the extension" }
+      - { cmd: "${var//old/new}", desc: "Replace every occurrence of old with new" }
+      - { cmd: "${var,,}", desc: "Lower-case (use ^^ for upper-case)" }
+      - { cmd: "${var:0:8}", desc: "Substring: 8 characters from offset 0" }
+  - name: Tests
+    defaults: { tags: [bash, test, if, condition] }
+    commands:
+      - { cmd: '[[ -f "$f" ]]', desc: "True if a regular file exists (-d directory, -e anything, -L symlink)" }
+      - { cmd: '[[ -s "$f" ]]', desc: "True if the file exists and is not empty" }
+      - { cmd: '[[ -z "$s" ]]', desc: "True if the string is empty (-n for not empty)" }
+      - { cmd: '[[ "$s" == web* ]]', desc: "Glob pattern match" }
+      - { cmd: '[[ "$s" =~ ^[0-9]+$ ]]', desc: "Regex match - here: only digits" }
+      - { cmd: "(( count > 10 ))", desc: "Integer comparison, C style" }
+      - { cmd: "if ! systemctl is-active --quiet ssh; then ...; fi", desc: "Branch directly on a command's exit status" }
+  - name: Loops & input
+    defaults: { tags: [bash, loop, read, array] }
+    commands:
+      - { cmd: 'while IFS= read -r line; do echo "$line"; done < file.txt', desc: "Read a file line by line, safely" }
+      - { cmd: 'for f in /var/log/*.log; do echo "$f"; done', desc: "Loop over files - never parse ls" }
+      - { cmd: 'for h in "${hosts[@]}"; do ping -c1 "$h"; done', desc: "Loop over an array, keeping items with spaces intact" }
+      - { cmd: "for i in {1..10}; do echo $i; done", desc: "Count from 1 to 10" }
+      - { cmd: "mapfile -t lines < file.txt", desc: "Load a file into an array, one line per element" }
+      - { cmd: "declare -A port=([ssh]=22 [https]=443)", desc: "Associative array (key -> value)" }
+      - { cmd: "shift $((OPTIND - 1))", desc: "After getopts: drop the parsed options, keep positional arguments" }
+  - name: Cron helpers
+    defaults: { tags: [cron, schedule, automation] }
+    commands:
+      - { cmd: "crontab -e", desc: "Edit the current user's scheduled jobs" }
+      - { cmd: "crontab -l", desc: "List the current user's scheduled jobs" }
+      - { cmd: "0 3 * * * /usr/local/bin/backup.sh >> /var/log/backup.log 2>&1", desc: "Cron line: every day at 03:00, output appended to a log" }
+      - { cmd: "flock -n /run/job.lock /usr/local/bin/job.sh", desc: "Skip this run if the previous one is still going" }
+      - { cmd: "*/5 * * * *", desc: "Schedule: every 5 minutes (fields: minute hour day month weekday)" }

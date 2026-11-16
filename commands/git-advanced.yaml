@@ -1,0 +1,51 @@
+title: Git — branches, history & rescue
+# Companion to content/dev-tools/git-branching.md
+defaults:
+  category: dev-tools
+  platform: git
+groups:
+  - name: Branches
+    defaults: { tags: [git, branch, switch] }
+    commands:
+      - { cmd: "git switch -c feature/name", desc: "Create a branch and switch to it" }
+      - { cmd: "git switch -", desc: "Jump back to the previous branch" }
+      - { cmd: "git branch -a", desc: "List local and remote-tracking branches" }
+      - { cmd: "git branch -vv", desc: "Branches with their upstream and ahead/behind counts" }
+      - { cmd: "git branch -m new-name", desc: "Rename the current branch" }
+      - { cmd: "git branch -d feature/name", desc: "Delete a branch that is already merged" }
+      - { cmd: "git branch -D feature/name", desc: "Delete a branch even if it is not merged", danger: "Unmerged commits become unreachable (recoverable only via reflog)." }
+      - { cmd: "git push origin --delete feature/name", desc: "Delete a branch on the remote" }
+      - { cmd: "git fetch --prune", desc: "Fetch and drop references to branches deleted on the remote" }
+  - name: Merge & rebase
+    defaults: { tags: [git, merge, rebase, conflict] }
+    commands:
+      - { cmd: "git merge --no-ff feature/name", desc: "Merge and always create a merge commit" }
+      - { cmd: "git merge --squash feature/name", desc: "Stage the whole branch as one change, then commit it yourself" }
+      - { cmd: "git merge --abort", desc: "Cancel a merge that is in conflict" }
+      - { cmd: "git fetch && git rebase origin/main", desc: "Replay your branch on top of the latest main" }
+      - { cmd: "git rebase -i HEAD~3", desc: "Interactively squash, reword or drop the last 3 commits" }
+      - { cmd: "git rebase --continue", desc: "Carry on after resolving a rebase conflict" }
+      - { cmd: "git rebase --abort", desc: "Cancel the rebase and return to the starting point" }
+      - { cmd: "git diff --name-only --diff-filter=U", desc: "List files that still have conflicts" }
+      - { cmd: "git push --force-with-lease", desc: "Force-push a rebased branch, but refuse if someone else pushed", note: "Never plain --force on a shared branch." }
+      - { cmd: "git cherry-pick <hash>", desc: "Copy a single commit onto the current branch" }
+  - name: History & rescue
+    defaults: { tags: [git, log, reflog, undo, bisect] }
+    commands:
+      - { cmd: "git log --oneline --graph --all", desc: "Compact picture of every branch" }
+      - { cmd: "git log -p -- path/to/file", desc: "Every change ever made to one file" }
+      - { cmd: "git log -S 'text' --oneline", desc: "Find commits that added or removed a string" }
+      - { cmd: "git blame -L 10,20 file", desc: "Who last changed lines 10-20" }
+      - { cmd: "git reflog", desc: "Every position HEAD has had - the safety net" }
+      - { cmd: "git reset --hard HEAD@{1}", desc: "Undo the last reset / rebase / merge", danger: "Discards uncommitted changes in the working tree." }
+      - { cmd: "git branch recovered <hash>", desc: "Bring back a deleted branch from a reflog hash" }
+      - { cmd: "git revert <hash>", desc: "Undo a pushed commit safely with a new commit" }
+      - { cmd: "git bisect start && git bisect bad && git bisect good v1.0", desc: "Binary-search for the commit that broke something" }
+      - { cmd: "git stash push -u -m 'wip'", desc: "Shelve changes including untracked files" }
+  - name: Tags
+    defaults: { tags: [git, tag, release] }
+    commands:
+      - { cmd: "git tag -a v1.2.0 -m 'Release 1.2.0'", desc: "Create an annotated tag" }
+      - { cmd: "git push origin v1.2.0", desc: "Publish one tag (tags are not pushed by default)" }
+      - { cmd: "git tag -l 'v1.*'", desc: "List tags matching a pattern" }
+      - { cmd: "git describe --tags", desc: "Nearest tag plus commits since - a handy version string" }

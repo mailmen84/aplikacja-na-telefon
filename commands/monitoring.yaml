@@ -1,0 +1,47 @@
+title: Monitoring — Prometheus & Grafana
+# Companion to content/homelab/monitoring-prometheus-grafana.md
+defaults:
+  category: homelab
+  platform: shell
+groups:
+  - name: Setup & checks
+    defaults: { tags: [prometheus, grafana, node_exporter, monitoring] }
+    commands:
+      - { cmd: "sudo apt install -y prometheus-node-exporter", desc: "Install the host metrics exporter (listens on :9100)", admin: true }
+      - { cmd: "curl -s http://localhost:9100/metrics | head", desc: "Is the exporter answering?" }
+      - { cmd: "promtool check config prometheus.yml", desc: "Validate the Prometheus configuration" }
+      - { cmd: "promtool check rules alerts.yml", desc: "Validate alerting rules" }
+      - { cmd: "curl -s 'http://localhost:9090/api/v1/query?query=up'", desc: "Run a PromQL query from the shell" }
+      - { cmd: "curl -X POST http://localhost:9090/-/reload", desc: "Reload config without a restart", note: "Needs Prometheus started with --web.enable-lifecycle." }
+      - { cmd: "docker compose logs -f prometheus", desc: "Watch Prometheus logs for config and scrape errors" }
+  - name: Default ports
+    defaults: { tags: [ports, prometheus, grafana, exporter] }
+    commands:
+      - { cmd: "9090", desc: "Prometheus web UI and API" }
+      - { cmd: "3000", desc: "Grafana" }
+      - { cmd: "9100", desc: "node_exporter (Linux host metrics)" }
+      - { cmd: "9093", desc: "Alertmanager" }
+      - { cmd: "9182", desc: "windows_exporter" }
+      - { cmd: "9115", desc: "blackbox_exporter (HTTP / TCP / ICMP probes)" }
+  - name: PromQL — hosts
+    defaults: { tags: [promql, query, prometheus, metrics] }
+    commands:
+      - { cmd: "up == 0", desc: "Targets that are down right now" }
+      - { cmd: '100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)', desc: "CPU usage % per host" }
+      - { cmd: "(1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100", desc: "Memory usage %" }
+      - { cmd: '100 - (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"} * 100)', desc: "Root filesystem usage %" }
+      - { cmd: 'rate(node_network_receive_bytes_total{device!="lo"}[5m]) * 8', desc: "Network receive rate in bits per second" }
+      - { cmd: "(time() - node_boot_time_seconds) / 86400", desc: "Uptime in days" }
+      - { cmd: 'predict_linear(node_filesystem_avail_bytes{mountpoint="/"}[1h], 4 * 3600) < 0', desc: "Disk predicted to fill within 4 hours" }
+      - { cmd: "topk(5, node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes)", desc: "Top 5 hosts by memory used" }
+  - name: PromQL — building blocks
+    defaults: { tags: [promql, functions, prometheus] }
+    commands:
+      - { cmd: "rate(counter[5m])", desc: "Per-second average increase of a counter - the default for counters" }
+      - { cmd: "increase(counter[1h])", desc: "Total growth of a counter over the window" }
+      - { cmd: "sum by (instance) (metric)", desc: "Aggregate series, keeping one label (also avg, min, max, count)" }
+      - { cmd: "avg_over_time(gauge[1h])", desc: "Smooth a gauge over time" }
+      - { cmd: "histogram_quantile(0.95, sum by (le) (rate(metric_bucket[5m])))", desc: "95th percentile from a histogram" }
+      - { cmd: 'metric{instance=~"web.*"}', desc: "Label filter with a regex (!~ for not matching)" }
+      - { cmd: "metric offset 1d", desc: "The value 24 hours ago - compare with now" }
+      - { cmd: "label_values(node_uname_info, instance)", desc: "Grafana variable query: list all instances" }
