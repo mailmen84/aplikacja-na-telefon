@@ -39,3 +39,46 @@ groups:
       - { cmd: "git checkout -b feature/my-feature", desc: "Create and switch to a feature branch" }
       - { cmd: "git push -u origin feature/my-feature", desc: "Push a branch and set upstream" }
       - { cmd: "Source → Build → Test → Deploy", desc: "The classic CI/CD pipeline stages (e.g. Jenkins)" }
+      - { cmd: "gh run list --limit 5", desc: "GitHub Actions: recent workflow runs" }
+      - { cmd: "gh run view --log-failed", desc: "GitHub Actions: show only the failing step's log" }
+      - { cmd: "gh workflow run ci.yml", desc: "GitHub Actions: trigger a workflow_dispatch run" }
+  - name: Kubernetes — debug & rollouts
+    defaults: { tags: [kubernetes, k8s, kubectl, debug, rollout] }
+    commands:
+      - { cmd: "kubectl config current-context", desc: "Which cluster am I talking to? Check before any delete" }
+      - { cmd: "kubectl config set-context --current --namespace=<ns>", desc: "Change the default namespace" }
+      - { cmd: "kubectl get pods -o wide -w", desc: "Pods with IP and node, updating live" }
+      - { cmd: "kubectl get events --sort-by=.lastTimestamp", desc: "Recent cluster events, newest last" }
+      - { cmd: "kubectl logs <pod> --previous", desc: "Logs of the container that crashed (CrashLoopBackOff)" }
+      - { cmd: "kubectl get endpoints <service>", desc: "Does the Service actually have pods behind it?" }
+      - { cmd: "kubectl port-forward svc/<name> 8080:80", desc: "Reach a Service from your machine on localhost:8080" }
+      - { cmd: "kubectl run tmp --rm -it --image=busybox -- sh", desc: "Throwaway pod for testing DNS and connectivity" }
+      - { cmd: "kubectl set image deployment/<name> <container>=<image>:<tag>", desc: "Roll out a new image version" }
+      - { cmd: "kubectl rollout undo deployment/<name>", desc: "Roll back to the previous version" }
+      - { cmd: "kubectl rollout restart deployment/<name>", desc: "Recreate pods, e.g. to pick up a changed ConfigMap" }
+      - { cmd: "kubectl scale deployment/<name> --replicas=3", desc: "Change the number of replicas" }
+      - { cmd: "kubectl apply --dry-run=client -f file.yaml", desc: "Validate a manifest without applying it" }
+      - { cmd: "kubectl create deployment web --image=nginx --dry-run=client -o yaml", desc: "Generate a starter manifest" }
+      - { cmd: "kubectl explain deployment.spec.strategy", desc: "Built-in documentation for any field" }
+      - { cmd: "kubectl drain <node> --ignore-daemonsets --delete-emptydir-data", desc: "Evict pods before node maintenance", danger: "Pods are rescheduled - single-replica apps go down briefly." }
+      - { cmd: "kubectl uncordon <node>", desc: "Allow scheduling on the node again" }
+      - { cmd: "kubectl delete pod <pod> --grace-period=0 --force", desc: "Force-remove a pod stuck in Terminating", danger: "Skips graceful shutdown - last resort only." }
+  - name: Ansible — playbooks & vault
+    defaults: { tags: [ansible, playbook, vault, automation] }
+    commands:
+      - { cmd: "ansible-playbook site.yml --check --diff", desc: "Dry-run and show exactly what would change" }
+      - { cmd: "ansible-playbook site.yml --limit web01", desc: "Run against one host or group only" }
+      - { cmd: "ansible-playbook site.yml --tags packages", desc: "Run only tasks with a given tag" }
+      - { cmd: "ansible-playbook site.yml --syntax-check", desc: "Parse the playbook without running it" }
+      - { cmd: "ansible-playbook site.yml --list-hosts --list-tasks", desc: "Preview which hosts and tasks a run would touch" }
+      - { cmd: "ansible-playbook site.yml -e 'version=1.2'", desc: "Pass an extra variable (highest precedence)" }
+      - { cmd: "ansible web -b -m apt -a 'name=nginx state=present update_cache=true'", desc: "Ad-hoc: install a package on a group", admin: true }
+      - { cmd: "ansible all -b -m service -a 'name=ssh state=restarted'", desc: "Ad-hoc: restart a service everywhere", admin: true }
+      - { cmd: "ansible all -m shell -a 'df -h / | tail -1'", desc: "Ad-hoc: run a shell pipeline on every host" }
+      - { cmd: "ansible-inventory --graph", desc: "Show inventory groups as a tree" }
+      - { cmd: "ansible-doc ansible.builtin.apt", desc: "Module documentation and examples in the terminal" }
+      - { cmd: "ansible-galaxy collection install community.general", desc: "Install a collection of extra modules" }
+      - { cmd: "ansible-vault create group_vars/all/vault.yml", desc: "Create an encrypted variables file" }
+      - { cmd: "ansible-vault edit group_vars/all/vault.yml", desc: "Edit an encrypted file in place" }
+      - { cmd: "ansible-playbook site.yml --ask-vault-pass", desc: "Run a playbook that uses vaulted variables" }
+      - { cmd: "ansible-lint site.yml", desc: "Lint a playbook for mistakes and bad practice" }

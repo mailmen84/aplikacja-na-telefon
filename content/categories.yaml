@@ -28,7 +28,7 @@
   name: Networking
   icon: "🌐"
   color: "#12a594"
-  description: IPv4, subnetting, VLANs, CCNA theory
+  description: IPv4, subnetting, VLANs, OSI, core protocols, CCNA theory
 - id: cisco
   name: Cisco IOS
   icon: "🔀"
@@ -38,7 +38,7 @@
   name: Homelab
   icon: "🏠"
   color: "#30a46c"
-  description: SSH, Docker, Proxmox, remote access
+  description: SSH, Docker, Proxmox, Ansible, Kubernetes, monitoring
 - id: security
   name: Security & Pentest
   icon: "🛡️"
@@ -48,9 +48,9 @@
   name: Scripting
   icon: "📜"
   color: "#8e4ec6"
-  description: Bash scripting basics and patterns
+  description: Bash scripting basics, advanced patterns, automation recipes
 - id: dev-tools
   name: Dev Tools
   icon: "🧰"
   color: "#6e56cf"
-  description: Git, Python & pip, nano & vim
+  description: Git, GitHub Actions, YAML, Python & pip, nano & vim

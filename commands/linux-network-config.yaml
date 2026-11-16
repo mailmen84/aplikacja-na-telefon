@@ -1,0 +1,42 @@
+title: Linux network configuration
+# Companion to content/linux/09-network-configuration.md
+defaults:
+  category: linux
+  platform: linux
+groups:
+  - name: Addresses & routes (temporary)
+    defaults: { tags: [ip, address, route, gateway, network] }
+    commands:
+      - { cmd: "sudo ip addr add 192.168.1.50/24 dev eth0", desc: "Add an IP address until the next reboot", admin: true }
+      - { cmd: "sudo ip link set eth0 up", desc: "Bring an interface up (down to disable)", admin: true }
+      - { cmd: "sudo ip route add default via 192.168.1.1", desc: "Set the default gateway until the next reboot", admin: true }
+      - { cmd: "sudo ip route add 10.10.0.0/16 via 192.168.1.254", desc: "Add a static route until the next reboot", admin: true }
+      - { cmd: "ip route get 8.8.8.8", desc: "Show which route and interface a destination would use" }
+      - { cmd: "ip -s link show eth0", desc: "Interface counters: packets, errors, drops" }
+  - name: Persistent config
+    defaults: { tags: [netplan, nmcli, static ip, dns, hostname] }
+    commands:
+      - { cmd: "sudo netplan try", desc: "Apply netplan config with automatic rollback after 120 s", admin: true, note: "Use this over SSH - a typo will not lock you out." }
+      - { cmd: "sudo netplan apply", desc: "Apply /etc/netplan/*.yaml permanently", admin: true }
+      - { cmd: "nmcli connection show", desc: "List NetworkManager connection profiles" }
+      - { cmd: 'sudo nmcli connection modify "NAME" ipv4.method manual ipv4.addresses 192.168.1.50/24 ipv4.gateway 192.168.1.1 ipv4.dns "192.168.1.1"', desc: "Set a static IP on a NetworkManager profile", admin: true }
+      - { cmd: 'sudo nmcli connection up "NAME"', desc: "Re-activate a profile so changes take effect", admin: true }
+      - { cmd: "sudo nmtui", desc: "Text menu for NetworkManager settings", admin: true }
+      - { cmd: "sudo ifreload -a", desc: "Proxmox / ifupdown2: reload /etc/network/interfaces without a reboot", admin: true }
+      - { cmd: "sudo hostnamectl set-hostname web01", desc: "Change the hostname permanently", admin: true }
+      - { cmd: "getent hosts nas", desc: "Resolve a name the way the system does (hosts file, then DNS)" }
+  - name: Forwarding
+    defaults: { tags: [routing, forwarding, sysctl, router] }
+    commands:
+      - { cmd: "sysctl net.ipv4.ip_forward", desc: "Is this host forwarding packets? (0 = no, 1 = yes)" }
+      - { cmd: "sudo sysctl -w net.ipv4.ip_forward=1", desc: "Enable IP forwarding until the next reboot", admin: true }
+      - { cmd: "echo 'net.ipv4.ip_forward = 1' | sudo tee /etc/sysctl.d/99-forwarding.conf && sudo sysctl --system", desc: "Enable IP forwarding permanently", admin: true }
+  - name: Packet capture (tcpdump)
+    defaults: { tags: [tcpdump, capture, packets, pcap, sniff] }
+    commands:
+      - { cmd: "sudo tcpdump -i any -nn host 192.168.1.20", desc: "All traffic to or from one host", admin: true }
+      - { cmd: "sudo tcpdump -i eth0 -nn port 53", desc: "Watch DNS queries and answers", admin: true }
+      - { cmd: "sudo tcpdump -i eth0 -nn icmp", desc: "Are pings arriving and being answered?", admin: true }
+      - { cmd: "sudo tcpdump -i eth0 -nn arp", desc: "Watch ARP requests and replies", admin: true }
+      - { cmd: "sudo tcpdump -i eth0 -nn -c 200 -w /tmp/cap.pcap", desc: "Save 200 packets to a file for Wireshark", admin: true }
+      - { cmd: "tcpdump -nn -r /tmp/cap.pcap", desc: "Read a saved capture" }
